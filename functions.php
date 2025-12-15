@@ -78,8 +78,7 @@ add_filter( 'woocommerce_checkout_fields', function ( $fields ) {
 
 /* ================= DISABLE SHIPPING ================= */
 
-add_filter( 'woocommerce_cart_needs_shipping', '__return_false' );
-add_filter( 'woocommerce_cart_needs_shipping_address', '__return_false' );
+
 
 /* ================= CHECKOUT AJAX ================= */
 

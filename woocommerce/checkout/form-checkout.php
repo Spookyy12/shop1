@@ -1,51 +1,29 @@
 <?php
-/**
- * Checkout Form
- *
- * This template can be overridden by copying it to yourtheme/woocommerce/checkout/form-checkout.php.
- *
- * HOWEVER, on occasion WooCommerce will need to update template files and you
- * (the theme developer) will need to copy the new files to your theme to
- * maintain compatibility. We try to do this as little as possible, but it does
- * happen. When this occurs the version of the template file will be bumped and
- * the readme will list any important changes.
- *
- * @see https://woo.com/document/template-structure/
- * @package WooCommerce\Templates
- * @version 3.5.0
- */
-
 defined( 'ABSPATH' ) || exit;
-
 do_action( 'woocommerce_before_checkout_form', $checkout );
-
-if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_required() && ! is_user_logged_in() ) {
-	echo esc_html( apply_filters( 'woocommerce_checkout_must_be_logged_in_message', __( 'You must be logged in to checkout.', 'woocommerce' ) ) );
-	return;
-}
-
+// ... (код проверки логина, если нужен) ...
 ?>
-
 <form name="checkout" method="post" class="checkout woocommerce-checkout" action="<?php echo esc_url( wc_get_checkout_url() ); ?>" enctype="multipart/form-data">
+    <div class="checkout-columns">
+        <div class="checkout-fields">
+            
+            <div class="col-1">
+                <h2 class="checkout-section-title"><?php esc_html_e( 'Детали оплаты', 'woocommerce' ); ?></h2>
+                <?php do_action( 'woocommerce_checkout_billing' ); ?>
+            </div>
 
-	<div class="checkout-columns">
-		<div class="checkout-fields">
-			<h2 class="checkout-section-title"><?php esc_html_e( 'Детали доставки', 'woocommerce' ); ?></h2>
-			<?php do_action( 'woocommerce_checkout_billing' ); ?>
+            <div class="col-2">
+                <?php if ( WC()->cart->needs_shipping() && WC()->cart->show_shipping() ) : ?>
+                    <h2 class="checkout-section-title"><?php esc_html_e( 'Адрес доставки', 'woocommerce' ); ?></h2>
+                    <?php do_action( 'woocommerce_checkout_shipping' ); ?>
+                <?php endif; ?>
+            </div>
 
-			<?php do_action( 'woocommerce_checkout_before_customer_details' ); ?>
-			<?php do_action( 'woocommerce_checkout_after_customer_details' ); ?>
-		</div>
-
-		<div class="checkout-summary">
-			<h2 class="checkout-section-title"><?php esc_html_e( 'Ваш заказ', 'woocommerce' ); ?></h2>
-			<?php do_action( 'woocommerce_checkout_before_order_review_heading' ); ?>
-			<?php do_action( 'woocommerce_checkout_before_order_review' ); ?>
-			<?php do_action( 'woocommerce_checkout_order_review' ); ?>
-			<?php do_action( 'woocommerce_checkout_after_order_review' ); ?>
-		</div>
-	</div>
-
+        </div>
+        <div class="checkout-summary">
+            <h2 class="checkout-section-title"><?php esc_html_e( 'Ваш заказ', 'woocommerce' ); ?></h2>
+            <?php do_action( 'woocommerce_checkout_order_review' ); ?>
+        </div>
+    </div>
 </form>
-
 <?php do_action( 'woocommerce_after_checkout_form', $checkout ); ?>
