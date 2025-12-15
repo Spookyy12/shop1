@@ -8,8 +8,10 @@ do_action('woocommerce_before_main_content');
 ?>
 
 <main class="container shop-wrapper">
+<?php echo do_shortcode('[wpf-filters id=1]') ?>
 
 <?php
+
 if (woocommerce_product_loop()) {
 
     woocommerce_product_loop_start();

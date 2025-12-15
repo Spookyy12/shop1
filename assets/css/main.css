@@ -1869,81 +1869,157 @@ label {
 .woocommerce form .form-row .input-text::placeholder {
     color: #a3a3a3;
 }
-/* ================= SHOP FILTERS ================= */
+/* ================= WPF PRODUCT FILTER STYLES ================= */
 
-.shop-container {
+/* --- Общий контейнер и расположение --- */
+
+/* Переделываем страницу магазина в сетку: сайдбар слева, товары справа */
+.shop-wrapper {
     display: grid;
-    grid-template-columns: 280px 1fr; /* Сайдбар и основная часть */
+    grid-template-columns: 280px 1fr; /* Ширина фильтра и остальное пространство */
     gap: var(--gap-lg);
-    max-width: var(--container-max);
-    margin: 0 auto;
-    padding: var(--gap-lg) 20px;
+    align-items: flex-start;
 }
 
-.shop-sidebar {
+/* Стили для самого блока фильтров */
+.wpf-filters-container {
     background: var(--brand-dark);
     padding: var(--gap-md);
     border-radius: var(--radius);
     border: 1px solid var(--brand-gray);
-    align-self: start; /* Чтобы сайдбар не растягивался по высоте */
 }
 
-.filter-block {
+/* --- Блоки внутри фильтра (виджеты) --- */
+
+.wpf-filter-block {
     margin-bottom: var(--gap-md);
     padding-bottom: var(--gap-md);
     border-bottom: 1px solid var(--brand-gray);
 }
 
-.filter-block:last-child {
-    border-bottom: none;
+.wpf-filter-block:last-of-type {
     margin-bottom: 0;
     padding-bottom: 0;
+    border-bottom: none;
 }
 
-.filter-title {
+/* Заголовки блоков (например, "Категории", "Цена") */
+.wpf-filter-block .wpf-title h4 {
     font-size: 16px;
     font-weight: 700;
     margin-bottom: var(--gap-sm);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    color: var(--brand-text);
 }
 
-.filter-options {
+/* --- Чекбоксы и радиокнопки --- */
+
+.wpf-filter-block ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-.filter-label {
+.wpf-filter-block ul li {
+    padding: 0;
+    margin: 0;
+}
+
+.wpf-filter-block label {
     display: flex;
     align-items: center;
     gap: 10px;
     font-size: 14px;
     cursor: pointer;
     color: var(--brand-light-muted);
+    transition: color var(--transition-fast);
 }
 
-.filter-label input[type="checkbox"] {
+.wpf-filter-block label:hover {
+    color: var(--brand-text);
+}
+
+.wpf-filter-block input[type="checkbox"],
+.wpf-filter-block input[type="radio"] {
     width: 18px;
     height: 18px;
     accent-color: var(--brand-red); /* Делаем чекбокс красным */
+    background-color: var(--brand-gray);
+    border: 1px solid var(--brand-gray-light);
 }
 
-.price-inputs {
+/* Счётчик товаров рядом с категорией */
+.wpf-filter-block .wpf-count {
+    color: var(--brand-muted);
+    font-size: 12px;
+    margin-left: auto; /* Прижимаем вправо */
+}
+
+/* --- Слайдер Цены --- */
+
+/* Контейнер для полей ввода цены */
+.wpf-price-range-inputs {
     display: flex;
     align-items: center;
     gap: 8px;
+    margin-bottom: var(--gap-sm);
 }
 
-.price-input {
+.wpf-price-range-inputs input {
+    /* Используем стили из вашей темы */
     width: 100%;
+    padding: 10px 12px;
+    background: var(--brand-gray);
+    border: 1px solid var(--brand-gray-light);
+    color: var(--brand-text);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
 }
 
-.price-separator {
-    color: var(--brand-muted);
+/* Сам слайдер (jQuery UI) */
+.wpf-price-range-slider .ui-slider {
+    background: var(--brand-gray);
+    border: none;
+    height: 4px;
+    border-radius: 2px;
 }
 
-.filter-actions button {
+/* Полоса выбранного диапазона */
+.wpf-price-range-slider .ui-slider-range {
+    background: var(--brand-red);
+}
+
+/* Ползунки слайдера */
+.wpf-price-range-slider .ui-slider-handle {
+    width: 16px;
+    height: 16px;
+    background: var(--brand-red);
+    border-radius: 50%;
+    border: 2px solid var(--brand-white);
+    top: -6px;
+    cursor: pointer;
+    transition: box-shadow var(--transition-fast);
+}
+
+.wpf-price-range-slider .ui-slider-handle:focus,
+.wpf-price-range-slider .ui-slider-handle:hover {
+    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.3);
+}
+
+/* --- Кнопки --- */
+
+.wpf-filter-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: var(--gap-md);
+}
+
+.wpf-filter-buttons button {
     width: 100%;
     padding: 12px;
     border-radius: var(--radius-sm);
@@ -1952,64 +2028,32 @@ label {
     text-transform: uppercase;
     cursor: pointer;
     transition: all var(--transition-fast);
+    border: none;
 }
 
-.apply-filters-btn {
+/* Кнопка "Применить" */
+.wpf-filter-buttons .wpf-button {
     background: var(--brand-red);
     color: white;
-    border: none;
-    margin-bottom: 10px;
 }
-
-.apply-filters-btn:hover {
+.wpf-filter-buttons .wpf-button:hover {
     background: var(--brand-red-hover);
 }
 
-.reset-filters-btn {
+/* Кнопка "Сбросить" */
+.wpf-filter-buttons .wpf-reset-button {
     background: var(--brand-gray);
     color: var(--brand-text);
     border: 1px solid var(--brand-gray-light);
 }
-
-.reset-filters-btn:hover {
+.wpf-filter-buttons .wpf-reset-button:hover {
     background: var(--brand-gray-light);
 }
 
-/* Состояние загрузки для AJAX */
-#ajax-products-container {
-    position: relative;
-    transition: opacity 0.3s;
-}
 
-#ajax-products-container.loading {
-    opacity: 0.5;
-}
-
-#ajax-products-container.loading::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(10, 10, 10, 0.7);
-    z-index: 10;
-}
-
-#ajax-products-container.loading::after {
-    content: 'Загрузка...';
-    position: absolute;
-    top: 100px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: white;
-    font-size: 20px;
-    z-index: 11;
-}
-
-/* Адаптивность */
+/* --- Адаптивность --- */
 @media (max-width: 900px) {
-    .shop-container {
+    .shop-wrapper {
         grid-template-columns: 1fr; /* Фильтры сверху, товары снизу */
     }
 }
