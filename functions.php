@@ -11,11 +11,11 @@ add_action('after_setup_theme', function () {
         'primary' => 'Main Menu',
     ]);
 });
-
-/* ================= STYLES & SCRIPTS ================= */
+/* ================= STYLES & SCRIPTS (ИСПРАВЛЕННАЯ ВЕРСИЯ) ================= */
 
 add_action('wp_enqueue_scripts', function () {
 
+    // --- Основные стили темы ---
     wp_enqueue_style(
         'istore-style',
         get_template_directory_uri() . '/assets/css/main.css',
@@ -23,30 +23,29 @@ add_action('wp_enqueue_scripts', function () {
         '1.0'
     );
 
+    // --- Основной скрипт темы (для мобильного меню, аккордеона и т.д.) ---
     wp_enqueue_script(
         'istore-main',
         get_template_directory_uri() . '/assets/js/main.js',
-        [],
+        [], // Зависимость от jQuery здесь не нужна, так как используется нативный JS
         '1.0',
         true
     );
 
-    /* Checkout AJAX */
+    // --- Скрипт для страницы Checkout ---
     if ( is_checkout() ) {
         wp_enqueue_script(
             'istore-checkout',
             get_template_directory_uri() . '/assets/js/checkout-update.js',
-            [],
+            ['jquery'], // Здесь нужна зависимость от jQuery
             '1.0',
             true
         );
-
         wp_localize_script( 'istore-checkout', 'istoreCheckout', [
             'ajax_url' => admin_url( 'admin-ajax.php' ),
         ] );
     }
 });
-
 /* ================= CART COUNTER ================= */
 
 add_filter( 'woocommerce_add_to_cart_fragments', function ( $fragments ) {
